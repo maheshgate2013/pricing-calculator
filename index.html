@@ -1,0 +1,43 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mahesh IES Academy – Pricing Calculator</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #f0f4f8; margin: 0; padding: 2rem; }
+    .container { max-width: 600px; margin: auto; background: #fff; padding: 2rem; border-radius: 1rem; box-shadow: 0 0 20px rgba(0,0,0,0.1); }
+    h1 { text-align: center; color: #0056b3; }
+    .item { display: flex; justify-content: space-between; margin: 1rem 0; }
+    .total { text-align: center; font-size: 1.5rem; margin-top: 2rem; color: green; }
+    button { display: block; margin: 2rem auto; padding: 0.75rem 1.5rem; font-size: 1rem; background: #007bff; color: #fff; border: none; border-radius: 0.5rem; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Mahesh IES Academy<br>Pricing Calculator</h1>
+    <div class="item"><label><input type="checkbox" class="item-check" data-price="6000"> Video Course</label> ₹6000</div>
+    <div class="item"><label><input type="checkbox" class="item-check" data-price="1500"> Test Series</label> ₹1500</div>
+    <div class="item"><label><input type="checkbox" class="item-check" data-price="1000"> eNotes</label> ₹1000</div>
+    <div class="item"><label><input type="checkbox" class="item-check" data-price="499"> Quick Revision Chart</label> ₹499</div>
+    <div class="item"><label><input type="checkbox" class="item-check" data-price="799"> Chapterwise PYQs E-Booklet</label> ₹799</div>
+    <div class="item"><label><input type="checkbox" class="item-check" data-price="299"> Mind Maps</label> ₹299</div>
+    <div class="item"><label><input type="checkbox" id="discount"> Apply Combo Discount (20%)</label></div>
+    <div class="total" id="total">Total: ₹0</div>
+    <button onclick="calculateTotal()">Calculate Total</button>
+  </div>
+  <script>
+    function calculateTotal() {
+      const checkboxes = document.querySelectorAll('.item-check');
+      let total = 0;
+      checkboxes.forEach(cb => {
+        if (cb.checked) total += parseFloat(cb.dataset.price);
+      });
+      const discount = document.getElementById('discount').checked;
+      if (discount) total *= 0.8;
+      document.getElementById('total').textContent = 'Total: ₹' + Math.round(total);
+    }
+  </script>
+</body>
+</html>
