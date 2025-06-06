@@ -1,43 +1,363 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Mahesh IES Academy – Pricing Calculator</title>
-  <style>
-    body { font-family: Arial, sans-serif; background: #f0f4f8; margin: 0; padding: 2rem; }
-    .container { max-width: 600px; margin: auto; background: #fff; padding: 2rem; border-radius: 1rem; box-shadow: 0 0 20px rgba(0,0,0,0.1); }
-    h1 { text-align: center; color: #0056b3; }
-    .item { display: flex; justify-content: space-between; margin: 1rem 0; }
-    .total { text-align: center; font-size: 1.5rem; margin-top: 2rem; color: green; }
-    button { display: block; margin: 2rem auto; padding: 0.75rem 1.5rem; font-size: 1rem; background: #007bff; color: #fff; border: none; border-radius: 0.5rem; cursor: pointer; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clarity Studio Photography - Pricing Calculator</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap');
+
+        :root {
+            --primary-background: #1a1a1a;
+            --secondary-background: #2b2b2b;
+            --primary-text: #ffffff;
+            --accent-color: #00ff99;
+            --slider-track: #444;
+            --card-border: #333;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--primary-background);
+            color: var(--primary-text);
+            margin: 0;
+            padding: 2rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .calculator-container {
+            width: 100%;
+            max-width: 500px;
+            background-color: var(--secondary-background);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            border: 1px solid var(--card-border);
+        }
+
+        .calculator-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .calculator-header h1 {
+            font-size: 2rem;
+            margin: 0;
+            font-weight: 700;
+        }
+
+        .calculator-header p {
+            font-size: 1rem;
+            color: #aaa;
+            margin-top: 0.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 2rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 1rem;
+            font-weight: 500;
+            margin-bottom: 1rem;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .output {
+            font-weight: 700;
+            color: var(--accent-color);
+        }
+
+        /* Slider */
+        .slider-container {
+            position: relative;
+        }
+
+        input[type="range"] {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 8px;
+            border-radius: 5px;
+            background: var(--slider-track);
+            outline: none;
+            opacity: 0.7;
+            -webkit-transition: .2s;
+            transition: opacity .2s;
+            cursor: pointer;
+        }
+
+        input[type="range"]:hover {
+            opacity: 1;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--accent-color);
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(0, 255, 153, 0.5);
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--accent-color);
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 0 10px rgba(0, 255, 153, 0.5);
+        }
+
+        /* Number Input */
+        .number-input-container {
+            display: flex;
+            align-items: center;
+            background-color: var(--primary-background);
+            border-radius: 10px;
+            padding: 0.5rem;
+            width: 150px;
+        }
+
+        .number-input-container button {
+            background-color: var(--accent-color);
+            color: var(--primary-background);
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            font-weight: bold;
+            cursor: pointer;
+            line-height: 30px;
+            text-align: center;
+        }
+
+        .number-input-container input {
+            width: 50px;
+            text-align: center;
+            font-size: 1.2rem;
+            font-weight: 700;
+            background: none;
+            border: none;
+            color: var(--primary-text);
+            margin: 0 1rem;
+        }
+        /* Hide number input arrows */
+        input[type=number]::-webkit-inner-spin-button,
+        input[type=number]::-webkit-outer-spin-button {
+          -webkit-appearance: none;
+          margin: 0;
+        }
+        input[type=number] {
+          -moz-appearance: textfield;
+        }
+
+
+        /* Album Selector */
+        .album-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 1rem;
+        }
+
+        .album-option {
+            background-color: var(--primary-background);
+            border: 2px solid var(--card-border);
+            border-radius: 10px;
+            padding: 1rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+        }
+
+        .album-option.selected {
+            border-color: var(--accent-color);
+            box-shadow: 0 0 15px rgba(0, 255, 153, 0.3);
+        }
+
+        .album-option:hover {
+            transform: translateY(-5px);
+        }
+
+        .album-option .price {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-top: 0.5rem;
+        }
+
+        /* Total Price */
+        .total-price-container {
+            margin-top: 3rem;
+            text-align: center;
+            background: linear-gradient(90deg, #00ff99, #00b36b);
+            padding: 1.5rem;
+            border-radius: 15px;
+        }
+
+        .total-price-container p {
+            margin: 0;
+            font-size: 1.2rem;
+            font-weight: 500;
+            color: #1a1a1a;
+        }
+
+        .total-price-container .total-amount {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-top: 0.5rem;
+        }
+
+         /* CTA Button */
+         .cta-button {
+            display: block;
+            width: 100%;
+            padding: 1rem;
+            margin-top: 2rem;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--primary-background);
+            background-color: var(--accent-color);
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            transition: all 0.2s ease-in-out;
+        }
+
+        .cta-button:hover {
+            transform: scale(1.02);
+            box-shadow: 0 0 20px rgba(0, 255, 153, 0.5);
+        }
+    </style>
 </head>
 <body>
-  <div class="container">
-    <h1>Mahesh IES Academy<br>Pricing Calculator</h1>
-    <div class="item"><label><input type="checkbox" class="item-check" data-price="6000"> Video Course</label> ₹6000</div>
-    <div class="item"><label><input type="checkbox" class="item-check" data-price="1500"> Test Series</label> ₹1500</div>
-    <div class="item"><label><input type="checkbox" class="item-check" data-price="1000"> eNotes</label> ₹1000</div>
-    <div class="item"><label><input type="checkbox" class="item-check" data-price="499"> Quick Revision Chart</label> ₹499</div>
-    <div class="item"><label><input type="checkbox" class="item-check" data-price="799"> Chapterwise PYQs E-Booklet</label> ₹799</div>
-    <div class="item"><label><input type="checkbox" class="item-check" data-price="299"> Mind Maps</label> ₹299</div>
-    <div class="item"><label><input type="checkbox" id="discount"> Apply Combo Discount (20%)</label></div>
-    <div class="total" id="total">Total: ₹0</div>
-    <button onclick="calculateTotal()">Calculate Total</button>
-  </div>
-  <script>
-    function calculateTotal() {
-      const checkboxes = document.querySelectorAll('.item-check');
-      let total = 0;
-      checkboxes.forEach(cb => {
-        if (cb.checked) total += parseFloat(cb.dataset.price);
-      });
-      const discount = document.getElementById('discount').checked;
-      if (discount) total *= 0.8;
-      document.getElementById('total').textContent = 'Total: ₹' + Math.round(total);
-    }
-  </script>
+
+    <div class="calculator-container">
+        <div class="calculator-header">
+            <h1>Clarity Studio</h1>
+            <p>Instant Price Estimate</p>
+        </div>
+
+        <div class="form-group">
+            <label for="sessionDuration">Session Duration: <span id="sessionDurationOutput" class="output">2 hours</span></label>
+            <div class="slider-container">
+                <input type="range" id="sessionDuration" min="1" max="5" value="2" step="0.5">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="editedImages">Number of Edited Images: <span id="editedImagesCost" class="output">$250</span></label>
+            <div class="number-input-container">
+                <button id="decrementImages">-</button>
+                <input type="number" id="editedImages" value="5" min="0">
+                <button id="incrementImages">+</button>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Choose a Photo Album:</label>
+            <div class="album-options">
+                <div class="album-option" data-value="0">
+                    <div>No Album</div>
+                    <div class="price">$0</div>
+                </div>
+                <div class="album-option" data-value="100">
+                    <div>Standard</div>
+                    <div class="price">$100</div>
+                </div>
+                <div class="album-option" data-value="300">
+                    <div>Premium</div>
+                    <div class="price">$300</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="total-price-container">
+            <p>Estimated Total</p>
+            <div id="totalPrice" class="total-amount">$0</div>
+        </div>
+
+        <a href="#" class="cta-button">Book Now</a>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const sessionDurationInput = document.getElementById('sessionDuration');
+            const sessionDurationOutput = document.getElementById('sessionDurationOutput');
+
+            const editedImagesInput = document.getElementById('editedImages');
+            const editedImagesCostOutput = document.getElementById('editedImagesCost');
+            const incrementImagesBtn = document.getElementById('incrementImages');
+            const decrementImagesBtn = document.getElementById('decrementImages');
+
+            const albumOptions = document.querySelectorAll('.album-option');
+
+            const totalPriceOutput = document.getElementById('totalPrice');
+
+            const pricing = {
+                sessionHourRate: 200, // Average of $150-250
+                perImageRate: 50,
+                album: 0
+            };
+
+            function calculateTotal() {
+                const sessionHours = parseFloat(sessionDurationInput.value);
+                const numImages = parseInt(editedImagesInput.value);
+
+                const sessionCost = sessionHours * pricing.sessionHourRate;
+                const imagesCost = numImages * pricing.perImageRate;
+                const albumCost = pricing.album;
+
+                const total = sessionCost + imagesCost + albumCost;
+
+                // Update UI
+                sessionDurationOutput.textContent = `${sessionHours} hour${sessionHours > 1 ? 's' : ''}`;
+                editedImagesCostOutput.textContent = `$${imagesCost}`;
+                totalPriceOutput.textContent = `$${total}`;
+            }
+
+            // Event Listeners
+            sessionDurationInput.addEventListener('input', calculateTotal);
+
+            incrementImagesBtn.addEventListener('click', () => {
+                editedImagesInput.value = parseInt(editedImagesInput.value) + 1;
+                calculateTotal();
+            });
+
+            decrementImagesBtn.addEventListener('click', () => {
+                const currentValue = parseInt(editedImagesInput.value);
+                if (currentValue > 0) {
+                    editedImagesInput.value = currentValue - 1;
+                    calculateTotal();
+                }
+            });
+            editedImagesInput.addEventListener('input', calculateTotal);
+
+
+            albumOptions.forEach(option => {
+                option.addEventListener('click', () => {
+                    albumOptions.forEach(opt => opt.classList.remove('selected'));
+                    option.classList.add('selected');
+                    pricing.album = parseInt(option.getAttribute('data-value'));
+                    calculateTotal();
+                });
+            });
+
+            // Set default album selection and initial calculation
+            albumOptions[0].classList.add('selected'); // Default to "No Album"
+            calculateTotal();
+        });
+    </script>
+
 </body>
 </html>
